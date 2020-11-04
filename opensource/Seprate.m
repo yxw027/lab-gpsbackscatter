@@ -58,6 +58,7 @@ plot(DataDn);
 hold off
 
 LocsCnoIndex= find(pickUp==1);
+% LocsCnoIndex= find(pickDn==1);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
 %

@@ -13,7 +13,7 @@ prFileName = 'gnss_log_2020_08_07_03_36_36.txt'; %no duty cycling, with carrier 
 
 % dirName = 'E:\Users\ASUS\Documents\Lab Research\Submit\NewCode\gps-measurement-tools-master\opensource\demoFiles';
 % dirName = 'E:\Users\ASUS\Documents\Lab Research\Submit\NewCode\gps-measurement-tools-master\opensource\demoFiles';
-dirName = '..\TEST\Room_810_PCL_0804\Test0_5Hz\1';
+dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
 % dirName='E:\Users\ASUS\Desktop\TEST\mi8';
 % 3) run ProcessGnssMeasScript.m script file 
 param.llaTrueDegDegM = [];
