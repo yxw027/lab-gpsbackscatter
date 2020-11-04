@@ -47,6 +47,7 @@ for i=1:LenGnss
     
 end
 
+save('pickUp.mat','pickUp');
 DataUp = pickUp .* gnssCnoMax';
 DataDn = pickDn .* gnssCnoMax';
 
@@ -57,8 +58,8 @@ plot(DataUp);
 plot(DataDn);
 hold off
 
-LocsCnoIndex= find(pickUp==1);
-% LocsCnoIndex= find(pickDn==1);
+% LocsCnoIndex= find(pickUp==1);
+LocsCnoIndex= find(pickDn==1);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
 %
