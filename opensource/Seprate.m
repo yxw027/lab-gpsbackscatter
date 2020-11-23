@@ -4,26 +4,28 @@ figure;
 figure;
 PlotCno(gnssMeas,prFileName,colors);
 
+% pick out the strongest sat signal as stander
 [strongestSig,SigIndex]=max(gnssMeas.Cn0DbHz);
 [MaxCn0DbHz,Index]=max(strongestSig);
 StongestSvid=gnssMeas.Svid(Index);
 
 
-
-%选到信号�?��的卫星信�?
 Index = 8;
 gnssCnoMax=gnssMeas.Cn0DbHz(:,Index);
 
+% set the nan as 0
 for i=1:length(gnssCnoMax)
     if isnan(gnssCnoMax(i)) 
        gnssCnoMax(i)=0; 
     end
     
 end
-
+% plot for scale view
 figure;
 plot(gnssCnoMax);
 
+% window length 4
+% split data into two parts
 LenGnss = length(gnssCnoMax);
 pickUp = zeros(1, LenGnss);
 pickDn = zeros(1, LenGnss);
@@ -47,6 +49,8 @@ for i=1:LenGnss
     
 end
 
+% pickUp -> backscattered sat signal
+% pickDn -> original sat signal
 save('pickUp.mat','pickUp');
 DataUp = pickUp .* gnssCnoMax';
 DataDn = pickDn .* gnssCnoMax';
@@ -58,8 +62,9 @@ plot(DataUp);
 plot(DataDn);
 hold off
 
-% LocsCnoIndex= find(pickUp==1);
-LocsCnoIndex= find(pickDn==1);
+% chose data for later processing
+LocsCnoIndex= find(pickUp==1);
+% LocsCnoIndex= find(pickDn==1);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
 %
@@ -83,6 +88,5 @@ gnssMeasBackscattered.Cn0DbHz=gnssMeas.Cn0DbHz(LocsCnoIndex,:);
 gnssBksCnoMax=gnssMeasBackscattered.Cn0DbHz(:,Index);
 figure;
 plot(gnssBksCnoMax);
-
 
 end
