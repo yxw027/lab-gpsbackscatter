@@ -1,4 +1,4 @@
-function  [gnssMeasBackscattered]=Seprate(gnssMeas,prFileName)
+function  [gnssMeasBackscattered , gnssRaw_BKS]=Seprate(gnssRaw, gnssMeas,prFileName)
 figure;
 [colors] = PlotPseudoranges(gnssMeas,prFileName);
 figure;
@@ -54,6 +54,7 @@ end
 save('pickUp.mat','pickUp');
 DataUp = pickUp .* gnssCnoMax';
 DataDn = pickDn .* gnssCnoMax';
+% pickOut = logical(pickUp);
 
 figure
 plot(gnssCnoMax);
@@ -88,5 +89,7 @@ gnssMeasBackscattered.Cn0DbHz=gnssMeas.Cn0DbHz(LocsCnoIndex,:);
 gnssBksCnoMax=gnssMeasBackscattered.Cn0DbHz(:,Index);
 figure;
 plot(gnssBksCnoMax);
+
+gnssRaw_BKS.FullBiasNanos = gnssRaw.FullBiasNanos(LocsCnoIndex,:);
 
 end

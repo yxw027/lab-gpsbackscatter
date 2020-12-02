@@ -79,10 +79,12 @@ for i=1:N
     numSvs = length(svid); %number of satellites this epoch
     
     
-    gpsPvt_BKS(i).numSvs = numSvs;
+%     gpsPvt_BKS.numSvs(i) = numSvs;
+%     gpsPvt_BKS.gpsEph(i) = gpsEph;
     gpsPvt_BKS(i).svid = svid;
-
-
+    gpsPvt_BKS(i).numSvs = numSvs;
+    gpsPvt_BKS(i).gpsEph = gpsEph;
+    
     %GPS Week number:
     weekNumber = floor(-double(gnssRaw.FullBiasNanos(i))*1e-9/GpsConstants.WEEKSEC);
 %    use tRxSeconds 
@@ -91,7 +93,6 @@ for i=1:N
         [position(k,1), position(k,2), position(k,3)] = SatPosition(gpsEph(k),gnssMeas_BKS.tRxSeconds(i), weekNumber);
     end
     gpsPvt_BKS(i).position = position;
-    gpsPvt_BKS(i).gpsEph = gpsEph;
     if numSvs<4
         continue;%skip to next epoch
     end

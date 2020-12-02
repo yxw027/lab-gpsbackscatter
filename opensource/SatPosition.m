@@ -1,6 +1,8 @@
-function position=SatPosition(GpsEph,TOW,WN)
+function [xk yk zk]=SatPosition(GpsEph,TOW,WN)
 %
-%% PRN Toc af0 af1 af2 IODE Crs Delta_n M0 Cuc e Cus Asqrt Toe Cic OMEGA Cis i0 Crc omega OMEGA_DOT IDOT codeL2 GPS_Week L2Pdata Accuracy Health TGD IODC ttx Fit_interval
+%
+%
+% PRN Toc af0 af1 af2 IODE Crs Delta_n M0 Cuc e Cus Asqrt Toe Cic OMEGA Cis i0 Crc omega OMEGA_DOT IDOT codeL2 GPS_Week L2Pdata Accuracy Health TGD IODC ttx Fit_interval
 bGM84=3.986005e14;%地球引力常数
 bOMEGAE84=7.2921151467e-5;% 地球自转角速度
 % 1.计算卫星运行的平均角速度
@@ -21,7 +23,7 @@ ek = mk;
   phik=tak + GpsEph.omega;%  
  % 计算摄动改正项 
  corr_u=GpsEph.Cus*sin(2.0*phik)+GpsEph.Cuc*cos(2.0*phik);% cus GpsEph(11)  Cuc GpsEph(10)
- corr_r=GpsEph.Crs*sin(2.0*phik)+GpsEph.Crc*cos(2.0*phik);% Crs GpsEph(7) Crc GpsEph(19)
+ corr_r=GpsEph.Crs*sin(2.0*phik)+GpsEph.Crc*cos(2.0*phik);% Crs GpsEph(7)   Crc GpsEph(19)
  corr_i=GpsEph.Cis*sin(2.0*phik)+GpsEph.Cic*cos(2.0*phik);% Cis GpsEph(17)  Cic GpsEph(15)
 % 计算摄动改正
     uk = phik + corr_u;
@@ -35,7 +37,7 @@ omegak=GpsEph.OMEGA + (GpsEph.OMEGA_DOT - earthrate)*dt - earthrate * GpsEph.Toe
     xk = xpk * cos(omegak) - ypk * sin(omegak)*cos(ik);
     yk = xpk * sin(omegak) + ypk * cos(omegak)*cos(ik);
     zk = ypk * sin(ik);
-position=[xk yk zk];
+% position=[xk yk zk];
 
 
 end
