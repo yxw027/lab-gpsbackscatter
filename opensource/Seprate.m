@@ -51,7 +51,7 @@ end
 
 % pickUp -> backscattered sat signal
 % pickDn -> original sat signal
-save('pickUp.mat','pickUp');
+% save('pickUp.mat','pickUp'); 
 DataUp = pickUp .* gnssCnoMax';
 DataDn = pickDn .* gnssCnoMax';
 % pickOut = logical(pickUp);

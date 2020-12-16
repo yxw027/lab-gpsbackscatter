@@ -84,7 +84,7 @@ for i=1:N
 
 
     %GPS Week number:
-    weekNumber = floor(-double(gnssRaw.FullBiasNanos(i))*1e-9/GpsConstants.WEEKSEC);
+    weekNumber = floor(-double(gnssRaw_BKS.FullBiasNanos(i))*1e-9/GpsConstants.WEEKSEC);
 %    use tRxSeconds 
     for k=1:numSvs
 %         position.pos(k) = SatPosition(gpsEph(k),gnssMeas_BKS.tRxSeconds(i), weekNumber);
