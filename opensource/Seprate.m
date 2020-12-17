@@ -10,7 +10,7 @@ PlotCno(gnssMeas,prFileName,colors);
 StongestSvid=gnssMeas.Svid(Index);
 
 
-Index = 8;
+% Index = 8;
 gnssCnoMax=gnssMeas.Cn0DbHz(:,Index);
 
 % set the nan as 0
