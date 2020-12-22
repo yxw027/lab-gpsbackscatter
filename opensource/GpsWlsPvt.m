@@ -101,7 +101,7 @@ for i=1:N
     gpsPvt.hdop(i) = sqrt(P(1,1)+P(2,2));
     
     %compute variance of llaDegDegM
-    %inside LsPvt the weights are used like this:
+    %inside LsPvt the weights are used like this: 
     %  z = Hx, premultiply by W: Wz = WHx, and solve for x:
     %  x = pinv(Wpr*H)*Wpr*zPr;
     %  the point of the weights is to make sigma(Wz) = 1
