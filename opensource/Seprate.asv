@@ -1,4 +1,4 @@
-function  [gnssMeas_BKS, gnssMeas_NBKS]=Seprate(gnssRaw, gnssMeas,prFileName)
+function  [gnssMeas_BKS, gnssMeas_NBKS, gnssRaw_BKS]=Seprate(gnssRaw, gnssMeas,prFileName)
 figure;
 [colors] = PlotPseudoranges(gnssMeas,prFileName);
 figure;
@@ -27,8 +27,6 @@ plot(gnssCnoMax);
 % window length 4
 % split data into two parts
 LenGnss = length(gnssCnoMax);
-% pickUp -> backscattered sat signal  BKS
-% pickDn -> original sat signal       NBKS
 pickUp = zeros(1, LenGnss);
 pickDn = zeros(1, LenGnss);
 midThre = 0;
@@ -51,14 +49,18 @@ for i=1:LenGnss
     
 end
 
-% gnssMeasSep.Bks = pickUp .* gnssCnoMax';
-% gnssMeasSep.Org = pickDn .* gnssCnoMax';
-% figure
-% plot(gnssCnoMax);
-% hold on
-% plot(gnssMeasSep.Bks);
-% plot(gnssMeasSep.Org);
-% hold off
+
+ 
+gnssMeasSep.Bks = pickUp .* gnssCnoMax';
+gnssMeasSep.Org = pickDn .* gnssCnoMax';
+
+
+figure
+plot(gnssCnoMax);
+hold on
+plot(gnssMeasSep.Bks);
+plot(gnssMeasSep.Org);
+hold off
 
 % Seperate BKS and NBKS from
 iBKS = pickUp==1;
@@ -79,15 +81,17 @@ gnssMeas_NBKS = cell2struct(cellGnssMeas_NBKS, fieldMeas, 1);
 
 save( 'gnssMean.mat','gnssMeas', 'gnssMeas_BKS', 'gnssMeas_NBKS');
 
+
 figure;
 plot(gnssMeas_BKS.Cn0DbHz(:,1));
 
 
 
 % chose data for later processing
-% LocsCnoIndex= find(pickUp==1);
+LocsCnoIndex= find(pickUp==1);
 % LocsCnoIndex= find(pickDn==1);
 % gnssMeasBackscattered=gnssMeas(LocsCnoIndex);
+
 %
 % gnssMeasBackscattered.Svid=gnssMeas.Svid;
 % gnssMeasBackscattered.AzDeg=gnssMeas.AzDeg;
@@ -109,5 +113,7 @@ plot(gnssMeas_BKS.Cn0DbHz(:,1));
 % gnssBksCnoMax=gnssMeasBackscattered.Cn0DbHz(:,Index);
 % figure;
 % plot(gnssBksCnoMax);
+
+gnssRaw_BKS.FullBiasNanos = gnssRaw.FullBiasNanos(LocsCnoIndex,:);
 
 end

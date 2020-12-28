@@ -53,7 +53,16 @@ if isempty(allGpsEph), return, end
 % [gnssMeas] = ProcessGnssMeas(gnssRaw);
  [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw); % Process raw measurements read from ReadGnssLogger
  
- [gnssMeas_BKS, gnssRaw_BKS]=Seprate(gnssRaw,gnssMeas,prFileName);
+% [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw);
+% [gnssMeas_BKS, gnssMeas_NBKS, gnssRaw_BKS]=Seprate(gnssRaw,gnssMeas,prFileName);
+
+if ~exist([dirName '\' 'gnssMean.mat'], 'file')
+    [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw);
+    [gnssMeas_BKS, gnssMeas_NBKS]=Seprate(gnssRaw,gnssMeas,prFileName);
+    save( [dirName '\' 'gnssMean.mat'],'gnssMeas', 'gnssMeas_BKS', 'gnssMeas_NBKS');
+else
+    load([dirName '\' 'gnssMean.mat'],'gnssMeas', 'gnssMeas_BKS', 'gnssMeas_NBKS');
+end
  
 %  gnssRaw_BKS = gnssRaw.(1);
  
@@ -135,3 +144,11 @@ for i = 1:length(gpsPvt.allLlaDegDegM(:,1))
 end
 figure
 plot(distance)
+
+
+
+
+
+
+
+
