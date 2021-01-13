@@ -187,10 +187,19 @@ end %end of function MakeCsv
 
 function [header,C] = ReadRawCsv(rawCsvFile)
 %% read data from csv file into a numerical matrix 'S' and cell array 'header'
-S = csvread(rawCsvFile,1,0);%read numerical data from second row onwards
+% S = csvread(rawCsvFile,1,0);%read numerical data from second row onwards
+% S = csvread(rawCsvFile,1,0, [1 0 : 29]);%read numerical data from second row onwards
+% opts = detectImportOptions(rawCsvFile);
+% opts.SelectedVariableNames = [1:30]; 
+% preview(rawCsvFile,opts)
+% S = readmatrix(rawCsvFile,opts);%read numerical data from second row onwards
 %Note csvread fills ,, with zero, so we will need a lower level read function to
 %tell the difference between empty fields and valid zeros
-%T = readtable(csvFileName,'FileType','text'); %use this to debug
+% T = readtable(csvFileName,'FileType','text'); %use this to debug
+
+T = readtable(rawCsvFile,'FileType','text');
+S = table2array(T(:,(1:30)));
+
 
 %read header row:
 fid = fopen(rawCsvFile);
@@ -205,6 +214,7 @@ end
 header=textscan(headerString,'%s','Delimiter',','); 
 header = header{1}; %this makes header a numFieldsx1 cell array
 numFields = size(header,1);
+numFields = 30;
 
 %check that numFields == size(S,2)
 [~,M] = size(S); %M = number of columns

@@ -72,8 +72,10 @@ dataFilter{end,2}   = 'ConstellationType==1';
 
 %Example of how to use dataFilter for GnssMeasurementState 'State' bit fields: 
 %filter on GPS measurements with Code lock & TOW decoded:
+
 dataFilter{end+1,1} = 'State';
 dataFilter{end,2}   = 'bitand(State,2^0) & bitand(State,2^3)';
+
 % GNSS_MEASUREMENT_STATE_CODE_LOCK & GNSS_MEASUREMENT_STATE_TOW_DECODED
 
 % GnssAccumulatedDeltaRangeState values are defined gps.h, 

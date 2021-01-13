@@ -55,6 +55,7 @@ gpsPvt.allBcDotMps     = zeros(N,1)+NaN;
 gpsPvt.numSvs          = zeros(N,1);
 gpsPvt.hdop            = zeros(N,1)+inf;
 
+% N: number of sample with respect to time
 for i=1:N
     iValid = find(isfinite(gnssMeas.PrM(i,:))); %index into valid svid
     svid    = gnssMeas.Svid(iValid)';
