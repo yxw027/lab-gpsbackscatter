@@ -110,7 +110,7 @@ PlotCno(gnssMeas,prFileName,colors);
 % end
 %% compute WLS position and velocity
 % gpsPvt = GpsWlsPvt(gnssMeas_BKS,allGpsEph);
-gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
+gpsPvt= GpsWlsPvt(gnssMeas,allGpsEph);%
 
 %% plot Pvt results
 h4 = figure;

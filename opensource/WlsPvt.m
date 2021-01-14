@@ -1,4 +1,4 @@
-function [xHat,z,svPos,H,Wpr,Wrr] = WlsPvt(prs,gpsEph,xo)
+function [xHat,z,svPos,H,Wpr,Wrr] = WlsPvt(prs,gpsEph,xo,numSvsAll)
 % [xHat,z,svPos,H,Wpr,Wrr] = WlsPvt(prs,gpsEph,xo)
 % calculate a weighted least squares PVT solution, xHat
 % given pseudoranges, pr rates, and initial state
@@ -38,7 +38,8 @@ end
 
 xHat=[]; z=[]; H=[]; svPos=[];
 xyz0 = xo(1:3);
-bc = xo(4);
+% bc = xo(4);
+bc = [xo(4) 0];
 
 if numVal<4
   return
@@ -64,7 +65,8 @@ Wpr = diag(1./prs(:,jPrSig));
 Wrr = diag(1./prs(:,jPrrSig));
 
 %iterate on this next part tilL change in pos & line of sight vectors converge
-xHat=zeros(4,1);
+% xHat=zeros(4,1);
+xHat=zeros(5,1);
 dx=xHat+inf;
 whileCount=0; maxWhileCount=100; 
 %we expect the while loop to converge in < 10 iterations, even with initial
@@ -75,7 +77,11 @@ while norm(dx) > GnssThresholds.MAXDELPOSFORNAVM
         'while loop did not converge after %d iterations',whileCount);
     for i=1:length(gpsEph)
         % calculate tflight from, bc and dtsv
-        dtflight = (prs(i,jPr)-bc)/GpsConstants.LIGHTSPEED + dtsv(i);
+        if i <= numSvsAll(1)
+            dtflight = (prs(i,jPr)-bc(1))/GpsConstants.LIGHTSPEED + dtsv(i);
+        else
+            dtflight = (prs(i,jPr)-bc(2))/GpsConstants.LIGHTSPEED + dtsv(i);
+        end
         % Use of bc: bc>0 <=> pr too big <=> tflight too big.
         %   i.e. trx = trxu - bc/GpsConstants.LIGHTSPEED
         % Use of dtsv: dtsv>0 <=> pr too small <=> tflight too small.
@@ -92,13 +98,14 @@ while norm(dx) > GnssThresholds.MAXDELPOSFORNAVM
   svPos=[prs(:,jSv),svXyzTrx,dtsv(:)];
 
   %calculate the a-priori range residual
-  prHat = range(:) + bc -GpsConstants.LIGHTSPEED*dtsv;
+%   prHat = range(:) + bc -GpsConstants.LIGHTSPEED*dtsv;
+  prHat = range(:) + [ones(numSvsAll(1),1)*bc(1); ones(numSvsAll(2),1)*bc(2)] - GpsConstants.LIGHTSPEED*dtsv;
   % Use of bc: bc>0 <=> pr too big <=> rangehat too big
   % Use of dtsv: dtsv>0 <=> pr too small
     
   zPr = prs(:,jPr)-prHat; 
-  H = [v', ones(numVal,1)]; % H matrix = [unit vector,1]
-%   H = [v', zeros(numVal,1), ones(numVal,1)]; % H matrix = [unit vector,1]
+%   H = [v', ones(numVal,1)]; % H matrix = [unit vector,1]
+  H = [v', [ones(numSvsAll(1),1);zeros(numSvsAll(2),1)], [zeros(numSvsAll(1),1);ones(numSvsAll(2),1)]]; % H matrix = [unit vector,1]
   
   %z = Hx, premultiply by W: Wz = WHx, and solve for x:
   dx = pinv(Wpr*H)*Wpr*zPr;
@@ -107,7 +114,8 @@ while norm(dx) > GnssThresholds.MAXDELPOSFORNAVM
   % update xo, xhat and bc
   xHat=xHat+dx;
   xyz0=xyz0(:)+dx(1:3);
-  bc=bc+dx(4);
+%   bc=bc+dx(4);
+  bc=bc+dx(4:5);
 
   %Now calculate the a-posteriori range residual
   zPr = zPr-H*dx;
@@ -123,7 +131,7 @@ prrHat = rrMps + xo(8) - GpsConstants.LIGHTSPEED*dtsvDot;
 zPrr = prs(:,jPrr)-prrHat;
 %z = Hx, premultiply by W: Wz = WHx, and solve for x:
 vHat = pinv(Wrr*H)*Wrr*zPrr;
-xHat = [xHat;vHat]; 
+xHat = [xHat(1:4);vHat(1:4)]; 
 
 z = [zPr;zPrr];
 
@@ -138,8 +146,9 @@ jWk=1; jSec=2; jSv=3; jPr=4; jPrSig=5; jPrr=6; jPrrSig=7;%index of columns
 bOk=false;
 %check inputs
 numVal=size(prs,1);  
-if (max(prs(:,jSec))-min(prs(:,jSec)))> eps
-  return
+if 0&&((max(prs(:,jSec))-min(prs(:,jSec))) > 1.5)
+%     if (max(prs(:,jSec))-min(prs(:,jSec))) > eps
+%   return
 elseif length(gpsEph)~=numVal
     return
 elseif any(prs(:,jSv) ~= [gpsEph.PRN]')
