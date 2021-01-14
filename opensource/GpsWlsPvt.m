@@ -72,9 +72,11 @@ for i=1:N
     %for those svIds with valid ephemeris, pack prs matrix for WlsNav
     prM     = gnssMeas.PrM(i,iValid(iSv))';
     prSigmaM= gnssMeas.PrSigmaM(i,iValid(iSv))';
+%     prSigmaM = prSigmaM .^ 2;
     
     prrMps  = gnssMeas.PrrMps(i,iValid(iSv))';
     prrSigmaMps = gnssMeas.PrrSigmaMps(i,iValid(iSv))';
+%     prrSigmaMps = prrSigmaMps .^2;
     
     tRx = [ones(numSvs,1)*weekNum(i),gnssMeas.tRxSeconds(i,iValid(iSv))'];
     

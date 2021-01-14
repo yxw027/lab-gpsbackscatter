@@ -5,8 +5,8 @@
 % prFileName = 'gnss_log_2020_08_07_15_09_27.txt'; %with duty cycling, no carrier phase
 close all;
 clear all;
-prFileName = 'gnss_log_2021_01_04_12_01_29.txt'; 
-% prFileName = 'gnss_log_2020_08_07_03_46_58.txt'; 
+% prFileName = 'gnss_log_2021_01_04_12_01_29.txt'; 
+prFileName = 'gnss_log_2020_08_07_03_46_58.txt'; 
 % as follows
 % 1) copy everything from GitHub google/gps-me     asurement-tools/ to 
 %    a local directory on your machine
@@ -16,11 +16,10 @@ prFileName = 'gnss_log_2021_01_04_12_01_29.txt';
 % dirName = 'E:\Users\ASUS\Documents\Lab Research\Submit\NewCode\gps-measurement-tools-master\opensource\demoFiles';
 
 % Raw and GPS data Path
-dirName = 'D:\Filerec\dingding';
-% dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
+% dirName = 'D:\Filerec\dingding';
+dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
 % dirName='E:\Users\ASUS\Desktop\TEST\mi8';
-% 3) run ProcessGnssMeasScript.m script file 
-param.llaTrueDegDegM = [];
+
 
 %Author: Frank van Diggelen
 %Open Source code for processing Android GNSS Measurements
@@ -32,8 +31,9 @@ param.llaTrueDegDegM = [];
 %prFileName = 'put the pseuoranges log file name here';
 
 %% parameters
-%param.llaTrueDegDegM = [];
+param.llaTrueDegDegM = [];
 %enter true WGS84 lla, if you know it:
+param.llaTrueDegDegM = [22.5760482040084	113.936366904008 0];
 % param.llaTrueDegDegM = [37.422578, -122.081678, -28];%Charleston Park Test Site
 
 %% Set the data filter and Read log file
@@ -56,7 +56,7 @@ if isempty(allGpsEph), return, end
 %  [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw); % Process raw measurements read from ReadGnssLogger
  
 [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw);
-[gnssMeas_BKS, gnssMeas_NBKS]=Seprate(gnssRaw,gnssMeas,prFileName);
+% [gnssMeas_BKS, gnssMeas_NBKS]=Seprate(gnssRaw,gnssMeas,prFileName);
 
 % if ~exist([dirName '\' 'gnssMean.mat'], 'file')
 %     [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw);
@@ -108,17 +108,9 @@ PlotCno(gnssMeas,prFileName,colors);
 %     end
 % 
 % end
-
-
-
-
-
-
-
-
 %% compute WLS position and velocity
-gpsPvt = GpsWlsPvt(gnssMeas_BKS,allGpsEph);
-% gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
+% gpsPvt = GpsWlsPvt(gnssMeas_BKS,allGpsEph);
+gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
 
 %% plot Pvt results
 h4 = figure;
@@ -128,8 +120,6 @@ h5 = figure;
 PlotPvtStates(gpsPvt,prFileName);
 
 %% Plot Accumulated Delta Range 
-figure
-plot(gnssMeas.AdrM)
 if any(any(isfinite(gnssMeas.AdrM) & gnssMeas.AdrM~=0))
     [gnssMeas]= ProcessAdr(gnssMeas);
     h6 = figure;
