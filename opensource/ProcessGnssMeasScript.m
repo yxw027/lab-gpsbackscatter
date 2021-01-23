@@ -5,8 +5,10 @@
 % prFileName = 'gnss_log_2020_08_07_15_09_27.txt'; %with duty cycling, no carrier phase
 close all;
 clear all;
+% prFileName = 'gnss_log_2019_08_15_10_46_22.txt';
+prFileName = 'gnss_log_2021_01_18_16_12_58.txt';
 % prFileName = 'gnss_log_2021_01_04_12_01_29.txt'; 
-prFileName = 'gnss_log_2020_08_07_03_46_58.txt'; 
+% prFileName = 'gnss_log_2020_08_07_03_46_58.txt'; 
 % as follows
 % 1) copy everything from GitHub google/gps-me     asurement-tools/ to 
 %    a local directory on your machine
@@ -16,9 +18,10 @@ prFileName = 'gnss_log_2020_08_07_03_46_58.txt';
 % dirName = 'E:\Users\ASUS\Documents\Lab Research\Submit\NewCode\gps-measurement-tools-master\opensource\demoFiles';
 
 % Raw and GPS data Path
+% dirName = 'D:\browser\GnssAnalysisWindowsV3.0.3.0\demofiles\adrDemo';
+dirName = 'D:\Filerec\dingding\Mi8';
 % dirName = 'D:\Filerec\dingding';
-dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
-% dirName='E:\Users\ASUS\Desktop\TEST\mi8';
+% dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
 
 
 %Author: Frank van Diggelen
@@ -33,7 +36,7 @@ dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
 %% parameters
 param.llaTrueDegDegM = [];
 %enter true WGS84 lla, if you know it:
-param.llaTrueDegDegM = [22.5760482040084	113.936366904008 0];
+% param.llaTrueDegDegM = [22.5760482040084	113.936366904008 0];
 % param.llaTrueDegDegM = [37.422578, -122.081678, -28];%Charleston Park Test Site
 
 %% Set the data filter and Read log file
@@ -110,12 +113,15 @@ PlotCno(gnssMeas,prFileName,colors);
 % end
 %% compute WLS position and velocity
 % gpsPvt = GpsWlsPvt(gnssMeas_BKS,allGpsEph);
+% [gnssMeas] = PrMAdrSmoother(gnssMeas);
+% gnssMeas.PrM = gnssMeas.PrMSmooth;
 gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
 
 %% plot Pvt results
 h4 = figure;
 ts = 'Raw Pseudoranges, Weighted Least Squares solution';
 PlotPvt(gpsPvt,prFileName,param.llaTrueDegDegM,ts); drawnow;
+
 h5 = figure;
 PlotPvtStates(gpsPvt,prFileName);
 
@@ -129,6 +135,7 @@ if any(any(isfinite(gnssMeas.AdrM) & gnssMeas.AdrM~=0))
     PlotAdrResids(adrResid,gnssMeas,prFileName,colors);
 end
 
+% [gnssMeas] = PrMAdrSmoother(gnssMeas);
 %% Calculate err based on GroundTruth
 % GroundTruth = [22.576062252004220   113.9363809520042;];
 % % distance=distanceCountViaCoordinate(gpsPvt.allLlaDegDegM(:,1:2),GroundTruth)
