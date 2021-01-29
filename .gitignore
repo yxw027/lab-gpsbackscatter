@@ -1,3 +1,14 @@
 opensource/demoFiles/
 opensource/GnssAnalysisWindowsV3.0.3.0.zip
 dhx_paper/
+SDK_2.3.1_MKL03Z32xxx4/CMSIS/
+SDK_2.3.1_MKL03Z32xxx4/devices/
+SDK_2.3.1_MKL03Z32xxx4/docs/
+SDK_2.3.1_MKL03Z32xxx4/middleware/
+SDK_2.3.1_MKL03Z32xxx4/rtos/
+SDK_2.3.1_MKL03Z32xxx4/tools/
+SDK_2.3.1_MKL03Z32xxx4/*.xml
+SDK_2.3.1_MKL03Z32xxx4/*.txt
+
+
+TEST.7z
