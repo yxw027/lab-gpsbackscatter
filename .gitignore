@@ -12,3 +12,5 @@ SDK_2.3.1_MKL03Z32xxx4/*.txt
 
 
 TEST.7z
+Test/raw.csv
+*.gz

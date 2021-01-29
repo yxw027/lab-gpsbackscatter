@@ -6,26 +6,17 @@
 close all;
 clear all;
 % prFileName = 'gnss_log_2019_08_15_10_46_22.txt';
-prFileName = 'gnss_log_2021_01_18_16_12_58.txt';
+prFileName = 'gnss_log_2021_01_23_16_15_27.txt';
 % prFileName = 'gnss_log_2021_01_04_12_01_29.txt'; 
 % prFileName = 'gnss_log_2020_08_07_03_46_58.txt'; 
-% as follows
-% 1) copy everything from GitHub google/gps-me     asurement-tools/ to 
-%    a local directory on your machine
-% 2) change 'dirName = ...' to match the local directory you are using:
 
-% dirName = 'E:\Users\ASUS\Documents\Lab Research\Submit\NewCode\gps-measurement-tools-master\opensource\demoFiles';
-% dirName = 'E:\Users\ASUS\Documents\Lab Research\Submit\NewCode\gps-measurement-tools-master\opensource\demoFiles';
 
 % Raw and GPS data Path
 % dirName = 'D:\browser\GnssAnalysisWindowsV3.0.3.0\demofiles\adrDemo';
-dirName = 'D:\Filerec\dingding\Mi8';
+dirName = '..\Test';
+% dirName = 'D:\Filerec\dingding\Mi8';
 % dirName = 'D:\Filerec\dingding';
 % dirName = '..\dhx_paper\TEST\Room_810_PCL_0804\Test0_5Hz\1';
-
-
-%Author: Frank van Diggelen
-%Open Source code for processing Android GNSS Measurements
 
 %% data
 %To add your own data:
@@ -116,8 +107,11 @@ PlotCno(gnssMeas,prFileName,colors);
 
 % [gnssMeas] = PrMAdrSmoother(gnssMeas);
 % gnssMeas.PrM = gnssMeas.PrMSmooth;
-gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
 
+%%original code 
+gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
+%%our code for backsctter
+% gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph);
 
 %% plot Pvt results
 h4 = figure;

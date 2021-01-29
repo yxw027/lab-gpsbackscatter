@@ -94,7 +94,7 @@ while norm(dx) > GnssThresholds.MAXDELPOSFORNAVM
   range = sqrt( sum(v.^2) );
   v = v./(ones(3,1)*range); % line of sight unit vectors from sv to xo
 
-  % 发送信号时卫星的标号，位置，及其钟差
+  % 发�?�信号时卫星的标号，位置，及其钟�?
   svPos=[prs(:,jSv),svXyzTrx,dtsv(:)];
 
   %calculate the a-priori range residual
