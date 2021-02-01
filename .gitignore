@@ -11,6 +11,8 @@ SDK_2.3.1_MKL03Z32xxx4/*.xml
 SDK_2.3.1_MKL03Z32xxx4/*.txt
 
 
-TEST.7z
-Test/raw.csv
+Test/
 *.gz
+*.7z
+opensource.zip
+*.asv

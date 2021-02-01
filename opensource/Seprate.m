@@ -4,22 +4,36 @@ figure;
 figure;
 PlotCno(gnssMeas,prFileName,colors);
 
-% pick out the strongest sat signal as stander
-[strongestSig,SigIndex]=max(gnssMeas.Cn0DbHz);
-[MaxCn0DbHz,Index]=max(strongestSig);
-StongestSvid=gnssMeas.Svid(Index);
+
+% % pick out the strongest sat signal as stander
+% % every sat strongest(max) -> strongest's strongest
+% [strongestSig,SigIndex]=max(gnssMeas.Cn0DbHz);
+% [MaxCn0DbHz,Index]=max(strongestSig);
+% StongestSvid=gnssMeas.Svid(Index);
+
+% 
 
 
 % Index = 8;
-gnssCnoMax=gnssMeas.Cn0DbHz(:,Index);
+
+
+gnssCno = gnssMeas.Cn0DbHz;
 
 % set the nan as 0
-for i=1:length(gnssCnoMax)
-    if isnan(gnssCnoMax(i)) 
-       gnssCnoMax(i)=0; 
+for i=1:numel(gnssCno)
+    if isnan(gnssCno(i)) 
+       gnssCno(i)=0; 
     end
     
 end
+
+average = var(gnssCno);
+variance = std(gnssCno);
+[MaxCn0Pick,Index]=min(variance);
+SuitabelSvid=gnssMeas.Svid(Index);
+
+gnssCnoMax=gnssCno(:,Index);
+
 % plot for scale view
 figure;
 plot(gnssCnoMax);

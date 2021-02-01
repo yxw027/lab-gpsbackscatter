@@ -6,7 +6,7 @@
 close all;
 clear all;
 % prFileName = 'gnss_log_2019_08_15_10_46_22.txt';
-prFileName = 'gnss_log_2021_01_23_16_15_27.txt';
+prFileName = 'gnss_log_2021_01_23_16_26_40.txt';
 % prFileName = 'gnss_log_2021_01_04_12_01_29.txt'; 
 % prFileName = 'gnss_log_2020_08_07_03_46_58.txt'; 
 
@@ -50,7 +50,7 @@ if isempty(allGpsEph), return, end
 %  [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw); % Process raw measurements read from ReadGnssLogger
  
 [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw);
-% [gnssMeas_BKS, gnssMeas_NBKS]=Seprate(gnssRaw,gnssMeas,prFileName);
+[gnssMeas_BKS, gnssMeas_NBKS]=Seprate(gnssRaw,gnssMeas,prFileName);
 
 % if ~exist([dirName '\' 'gnssMean.mat'], 'file')
 %     [gnssMeas]= ProcessGnssMeasForBackscatter(gnssRaw);
@@ -109,9 +109,9 @@ PlotCno(gnssMeas,prFileName,colors);
 % gnssMeas.PrM = gnssMeas.PrMSmooth;
 
 %%original code 
-gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
+% gpsPvt= GpsWlsPvtBackscatter(gnssMeas,allGpsEph);%
 %%our code for backsctter
-% gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph);
+gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph);
 
 %% plot Pvt results
 h4 = figure;
